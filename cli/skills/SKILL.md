@@ -3,7 +3,7 @@ name: autoresearch
 version: 0.2.0
 description: Autonomous experiment loop runner — optimize any file overnight with AI
 binary: ars
-install: pip install autoresearch
+install: pip install autoresearch-cli
 provider_agnostic: true
 supported_providers:
   - anthropic
