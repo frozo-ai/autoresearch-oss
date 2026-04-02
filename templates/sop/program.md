@@ -17,7 +17,7 @@ Maximize the sop_quality score of a Standard Operating Procedure document, judge
 
 ## Experiment Loop
 1. Analyze the judge feedback from the eval output, then edit `sop.md` with improvements
-2. Run: `python eval.py`
+2. Run: `python3 eval.py`
 3. Read metric: parse `sop_quality:<value>` from stdout
 4. If improved: keep the change to `sop.md`
 5. If not improved: revert `sop.md` to the previous version

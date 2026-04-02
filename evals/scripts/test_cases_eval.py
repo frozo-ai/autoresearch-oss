@@ -172,7 +172,7 @@ def run_test_cases(
 
     for i, case in enumerate(test_cases):
         input_text = case.get("input", "")
-        expected = case.get("expected", "")
+        expected = case.get("expected", case.get("expected_output", ""))
 
         if not input_text or not expected:
             print(f"  SKIP case {i+1}: missing input or expected", file=sys.stderr)

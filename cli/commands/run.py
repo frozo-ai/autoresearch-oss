@@ -166,7 +166,7 @@ def run_cmd(
         if not eval_cmd:
             for name in ["eval.py", "eval.sh"]:
                 if Path(name).exists():
-                    eval_cmd = f"python eval.py" if name == "eval.py" else f"bash eval.sh"
+                    eval_cmd = f"python3 eval.py" if name == "eval.py" else f"bash eval.sh"
                     break
         if eval_cmd:
             import subprocess

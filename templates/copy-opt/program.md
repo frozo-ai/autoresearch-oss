@@ -17,7 +17,7 @@ Maximize the conversion_quality score of landing page copy, judged by an LLM eva
 
 ## Experiment Loop
 1. Analyze the judge feedback from the eval output, then edit `landing_copy.txt` with improved copy
-2. Run: `python eval.py`
+2. Run: `python3 eval.py`
 3. Read metric: parse `conversion_quality:<value>` from stdout
 4. If improved: keep the change to `landing_copy.txt`
 5. If not improved: revert `landing_copy.txt` to the previous version

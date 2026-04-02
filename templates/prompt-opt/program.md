@@ -16,7 +16,7 @@ Maximize the accuracy of an LLM system prompt against a suite of test cases, mea
 
 ## Experiment Loop
 1. Analyze current failures by reviewing eval output, then edit `system_prompt.txt` with an improved prompt
-2. Run: `python eval.py`
+2. Run: `python3 eval.py`
 3. Read metric: parse `accuracy_pct:<value>` from stdout
 4. If improved: keep the change to `system_prompt.txt`
 5. If not improved: revert `system_prompt.txt` to the previous version
