@@ -10,7 +10,7 @@ Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch), g
 
 ```bash
 # Install
-pip install autoresearch-oss
+pip install autoresearch
 
 # Scaffold a new project (interactive wizard)
 ars init
