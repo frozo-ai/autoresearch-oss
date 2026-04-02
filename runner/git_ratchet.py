@@ -48,7 +48,7 @@ class GitRatchet:
             self._run("config", "user.name", "AutoResearch Runner")
             # Exclude results.tsv and run.log from git — they must survive reverts
             gitignore = self.repo_path / ".gitignore"
-            gitignore.write_text("results.tsv\nrun.log\n__pycache__/\n*.pyc\n")
+            gitignore.write_text("results.tsv\nrun.log\n*.log\n*.txt.bak\n__pycache__/\n*.pyc\n.DS_Store\n")
             self._run("add", ".")
             self._run("commit", "-m", "Initial commit (autoresearch baseline)")
 
