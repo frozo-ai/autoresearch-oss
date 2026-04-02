@@ -32,11 +32,25 @@ def _run_wizard() -> tuple[str, str, str, str, str | None]:
         click.echo(f"  {i}. {choice}")
     click.echo()
 
-    goal = click.prompt(
-        "Choose",
-        type=click.Choice(goal_choices, case_sensitive=False),
-        show_choices=False,
-    )
+    goal_input = click.prompt("Choose (1-5)", type=str, default="1")
+
+    # Accept both number and full text
+    try:
+        idx = int(goal_input) - 1
+        if 0 <= idx < len(goal_choices):
+            goal = goal_choices[idx]
+        else:
+            click.echo(f"Invalid choice. Using default: LLM Prompt")
+            goal = goal_choices[0]
+    except ValueError:
+        # Try matching by text
+        matched = [g for g in goal_choices if g.lower() == goal_input.lower()]
+        if matched:
+            goal = matched[0]
+        else:
+            click.echo(f"Invalid choice. Using default: LLM Prompt")
+            goal = goal_choices[0]
+
     template, default_target = _WIZARD_OPTIONS[goal]
 
     # 1.5 — For prompts, ask about eval method
@@ -46,7 +60,7 @@ def _run_wizard() -> tuple[str, str, str, str, str | None]:
         click.echo("  1. Test cases — I have labeled input/expected output pairs")
         click.echo("  2. AI judge — let AI score quality automatically (no test data needed)")
         click.echo()
-        eval_choice = click.prompt("Choose", type=click.Choice(["1", "2"]), default="2")
+        eval_choice = click.prompt("Choose (1-2)", type=click.Choice(["1", "2"]), default="2")
         eval_method = "test_cases" if eval_choice == "1" else "ai_judge"
 
     # 2. Target file name
