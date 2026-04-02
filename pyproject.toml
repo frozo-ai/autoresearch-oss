@@ -1,0 +1,59 @@
+[project]
+name = "autoresearch-oss"
+version = "0.2.0"
+description = "Autonomous experiment loop runner — run 100 optimization experiments overnight. Define your goal in Markdown, bring your own LLM key, wake up to a better system."
+requires-python = ">=3.10"
+license = "MIT"
+readme = "README.md"
+authors = [
+    { name = "Frozo AI", email = "hello@frozo.ai" },
+]
+keywords = [
+    "autoresearch", "llm", "optimization", "experiments", "automation",
+    "prompt-engineering", "ai-agent", "ratchet", "eval", "overnight",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+Homepage = "https://research.frozo.ai"
+Repository = "https://github.com/frozo-ai/autoresearch-oss"
+Issues = "https://github.com/frozo-ai/autoresearch-oss/issues"
+Documentation = "https://github.com/frozo-ai/autoresearch-oss#readme"
+
+dependencies = [
+    "click>=8.0",
+    "anthropic>=0.40",
+    "openai>=1.50",
+    "google-generativeai>=0.8",
+    "httpx>=0.27",
+    "pyyaml>=6.0",
+    "tabulate>=0.9",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.9"]
+
+[project.scripts]
+ars = "cli.ars:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cli", "runner", "evals"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100

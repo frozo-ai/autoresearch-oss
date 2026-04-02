@@ -1,0 +1,39 @@
+# System Configuration
+# Tune these parameters to maximize the benchmark score.
+
+# ---- Server Settings ----
+# Number of worker threads (valid range: 1-64)
+workers: 4
+
+# Request queue size (valid range: 16-4096)
+queue_size: 128
+
+# Connection timeout in milliseconds (valid range: 100-30000)
+timeout_ms: 5000
+
+# ---- Cache Settings ----
+# Cache size in MB (valid range: 64-8192)
+cache_size_mb: 256
+
+# Cache TTL in seconds (valid range: 10-3600)
+cache_ttl_seconds: 300
+
+# Enable cache compression (true/false)
+cache_compression: false
+
+# ---- Processing Settings ----
+# Batch size for request processing (valid range: 1-512)
+batch_size: 32
+
+# Number of retry attempts (valid range: 0-10)
+max_retries: 3
+
+# Retry backoff multiplier (valid range: 1.0-5.0)
+retry_backoff: 2.0
+
+# ---- Memory Settings ----
+# Max memory usage in MB (valid range: 512-32768)
+max_memory_mb: 2048
+
+# GC interval in seconds (valid range: 5-300)
+gc_interval_seconds: 60

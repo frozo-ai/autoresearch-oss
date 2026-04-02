@@ -1,0 +1,22 @@
+[
+  {
+    "input": "Hi, I was charged twice for my subscription this month. Order #4821. Can you please refund the duplicate charge? My credit card ending in 3344 was billed $49.99 two times on March 15.",
+    "expected_output": "billing"
+  },
+  {
+    "input": "The app keeps crashing whenever I try to upload a file larger than 10MB. I'm on version 3.2.1 running macOS Sonoma. I've tried reinstalling but the issue persists. Here's the error log: segfault at 0x00007ff.",
+    "expected_output": "technical"
+  },
+  {
+    "input": "I need to update the email address on my account from john@old.com to john@new.com. I also want to enable two-factor authentication. Can you walk me through the steps?",
+    "expected_output": "account"
+  },
+  {
+    "input": "My order #7193 was supposed to arrive by March 20 but the tracking number still shows it's in the origin facility. It's been 8 days with no movement. I need this for a conference next week.",
+    "expected_output": "shipping"
+  },
+  {
+    "input": "I'm interested in learning more about your enterprise plan. How many seats are included and do you offer volume discounts? Also, is there a free trial available before we commit?",
+    "expected_output": "general"
+  }
+]
