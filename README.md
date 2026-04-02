@@ -2,6 +2,8 @@
 
 Autonomous experiment loop runner. Run 100 optimization experiments overnight — wake up to a better system.
 
+**Cloud version with dashboard, parallel lanes, and team features:** [research.frozo.ai](https://research.frozo.ai)
+
 Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch), generalized for CPU, any LLM provider, and any domain with a scoreable output.
 
 ## Quick Start
@@ -297,14 +299,48 @@ All eval scripts auto-detect the provider from whichever API key is set in your 
 | `LLM_MODEL` | Default model | `claude-haiku-4-5-20251001` |
 | `TIME_BUDGET` | Eval timeout (seconds) | `300` |
 
-## Cloud Version
+## AutoResearch Cloud
 
-For parallel lanes, team features, live dashboard, and hosted infrastructure — use [AutoResearch Cloud](https://research.frozo.ai).
+The CLI runs experiments locally on your machine. For teams, parallel execution, and a live dashboard — use [AutoResearch Cloud](https://research.frozo.ai).
+
+### Local vs Cloud
+
+| Feature | Local (this CLI) | Cloud |
+|---------|-----------------|-------|
+| Experiments | Up to 25 (free) / unlimited (logged in) | Unlimited |
+| Parallel lanes | 1 (sequential) | Up to 16 |
+| Live dashboard | Terminal output | Web UI with score charts, diffs |
+| Run history | `results.tsv` file | Persistent across runs |
+| Cross-run memory | Local only | Shared across team |
+| Notifications | None | Email, Slack, webhooks |
+| Team features | None | Shared projects, seats, SSO |
+| Infra | Your machine | Hosted runners, auto-scaling |
+
+### Get Started with Cloud
 
 ```bash
+# Sign up at https://research.frozo.ai (free tier: 3 runs/month)
+
+# Login from CLI
 ars login
+
+# Run on cloud with 4 parallel lanes
 ars run --cloud --lanes 4 --max-experiments 100
+
+# View results on dashboard
+ars status --cloud
 ```
+
+### Pricing
+
+| Plan | Price | Runs | Lanes | Experiments |
+|------|-------|------|-------|-------------|
+| Free | $0/mo | 3/month | 1 | 25/run |
+| Starter | $9/mo | 20/month | 2 | 100/run |
+| Pro | $29/mo | Unlimited | 4 | 500/run |
+| Team | $79/mo | Unlimited | 8 | 1000/run |
+
+All plans are BYOK — you bring your own LLM API key. AutoResearch charges for infrastructure, not tokens.
 
 ## License
 
