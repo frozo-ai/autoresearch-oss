@@ -11,6 +11,8 @@ The loop:
 8. Repeat until max_experiments or time limit
 """
 
+from __future__ import annotations
+
 import hashlib
 import json
 import logging

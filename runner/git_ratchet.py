@@ -8,6 +8,8 @@ The ratchet pattern:
 5. If not improved: discard experiment branch (revert)
 """
 
+from __future__ import annotations
+
 import logging
 import subprocess
 from pathlib import Path

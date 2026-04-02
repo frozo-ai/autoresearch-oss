@@ -4,6 +4,8 @@ Outputs results in the format:
 experiment_number\tdescription\tscore\tbaseline_score\tdelta\tkept\tduration_seconds\tcommit_hash
 """
 
+from __future__ import annotations
+
 import csv
 import io
 from dataclasses import dataclass

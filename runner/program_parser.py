@@ -4,6 +4,8 @@ Validates that a program.md file contains all required sections
 and extracts configuration for the experiment loop.
 """
 
+from __future__ import annotations
+
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
