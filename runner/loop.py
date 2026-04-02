@@ -304,11 +304,18 @@ def run_loop(
                 # The file mentioned is the eval harness, not the target
                 continue
         # Default: look for common target file names
-        candidates = list(workspace.glob("*prompt*")) + list(workspace.glob("*config*"))
-        if candidates:
-            target_file = str(candidates[0].relative_to(workspace))
+        for name in ["system_prompt.txt", "prompt.txt", "target.txt", "config.yaml",
+                     "config.json", "landing_copy.txt", "copy.txt", "solution.py", "sop.md"]:
+            if (workspace / name).exists():
+                target_file = name
+                break
         else:
-            raise ValueError("Could not determine target file. Use --target-file flag.")
+            # Fallback: glob for anything matching common patterns
+            candidates = list(workspace.glob("*prompt*")) + list(workspace.glob("*config*")) + list(workspace.glob("*copy*"))
+            if candidates:
+                target_file = str(candidates[0].relative_to(workspace))
+            else:
+                raise ValueError("Could not determine target file. Use --target-file flag.")
 
     target_path = workspace / target_file
     if not target_path.exists():
