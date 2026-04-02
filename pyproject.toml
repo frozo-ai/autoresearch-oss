@@ -1,6 +1,6 @@
 [project]
 name = "autoresearch-cli"
-version = "0.2.2"
+version = "0.2.3"
 description = "Autonomous experiment loop runner — run 100 optimization experiments overnight. Define your goal in Markdown, bring your own LLM key, wake up to a better system."
 requires-python = ">=3.10"
 license = "MIT"
@@ -52,6 +52,7 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["cli", "runner", "evals", "templates"]
+exclude = ["**/__pycache__", "**/*.pyc"]
 
 [tool.ruff]
 target-version = "py310"

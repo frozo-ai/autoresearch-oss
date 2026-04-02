@@ -113,7 +113,7 @@ def _scaffold(template: str, directory: str) -> list[str]:
 
     created: list[str] = []
     for src_file in sorted(template_dir.iterdir()):
-        if src_file.name.startswith("."):
+        if src_file.name.startswith(".") or src_file.name == "__pycache__" or src_file.is_dir():
             continue
         dest = target / src_file.name
         if dest.exists():
