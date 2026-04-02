@@ -6,6 +6,8 @@ Autonomous experiment loop runner. Run 100 optimization experiments overnight â€
 
 Inspired by [karpathy/autoresearch](https://github.com/karpathy/autoresearch), generalized for CPU, any LLM provider, and any domain with a scoreable output.
 
+![AutoResearch CLI Demo](docs/demo.gif)
+
 ## Quick Start
 
 ```bash
