@@ -63,20 +63,39 @@ def _run_wizard() -> tuple[str, str, str, str, str | None]:
         eval_choice = click.prompt("Choose (1-2)", type=click.Choice(["1", "2"]), default="2")
         eval_method = "test_cases" if eval_choice == "1" else "ai_judge"
 
-    # 2. Target file name
-    target_file = click.prompt("Target file name", default=default_target)
+    # 2. Target file — ask if user has an existing file to import
+    click.echo(f"\nTarget file (the file the AI will optimize): {default_target}")
+    existing_file = click.prompt(
+        "Path to your existing file (or press Enter to use the template)",
+        default="",
+        show_default=False,
+    )
+
+    if existing_file and Path(existing_file).exists():
+        target_file = default_target
+        # Will copy user's file after scaffolding
+        _user_file_content = Path(existing_file).read_text()
+        _import_user_file = True
+        click.echo(f"  Will import: {existing_file} ({len(_user_file_content)} chars)")
+    else:
+        target_file = default_target
+        _user_file_content = None
+        _import_user_file = False
+        if existing_file:
+            click.echo(f"  File not found: {existing_file}. Will use template default.")
 
     # 3. LLM provider
+    click.echo()
     provider = click.prompt(
-        "LLM provider",
+        "LLM provider (OpenAI, Anthropic, Gemini)",
         type=click.Choice(_PROVIDER_CHOICES, case_sensitive=False),
-        default="OpenAI",
+        default="Anthropic",
     )
 
     # 4. Directory
     directory = click.prompt("Project directory", default=".")
 
-    return template, directory, target_file, provider.lower(), eval_method
+    return template, directory, target_file, provider.lower(), eval_method, _import_user_file, _user_file_content
 
 
 def _scaffold(template: str, directory: str) -> list[str]:
@@ -124,9 +143,11 @@ def init_cmd(template: str | None, directory: str):
     to optimize, which target file to use, and which LLM provider to use.
     """
     provider = None
+    import_user_file = False
+    user_file_content = None
 
     if template is None:
-        template, directory, target_file, provider, eval_method = _run_wizard()
+        template, directory, target_file, provider, eval_method, import_user_file, user_file_content = _run_wizard()
         click.echo()
     else:
         target_file = None
@@ -139,32 +160,65 @@ def init_cmd(template: str | None, directory: str):
         click.echo("\nNo new files created (all already exist).")
         return
 
-    # If user chose test cases, remind them to edit test_cases.json
+    # Overwrite target file with user's content if they imported one
+    if import_user_file and user_file_content and target_file:
+        target_path = Path(directory).resolve() / target_file
+        target_path.write_text(user_file_content)
+        click.echo(f"  Imported your file → {target_file}")
+
+    # Show eval method info
     if eval_method == "test_cases":
-        click.echo("\n  Using test-case eval. Edit test_cases.json with your labeled examples.")
+        click.echo("\n  Eval: test cases")
+        click.echo("  Edit test_cases.json with your labeled examples:")
         click.echo('  Format: [{"input": "...", "expected": "..."}, ...]')
+        click.echo("  Tip: Start with 5-10 examples. More = more accurate scoring.")
     elif eval_method == "ai_judge":
-        click.echo("\n  Using AI judge eval. No test data needed — the LLM will score quality automatically.")
+        click.echo("\n  Eval: AI judge (uses your API key for scoring)")
+        click.echo("  No test data needed — the LLM scores each version on quality criteria.")
+        click.echo("  Note: Each experiment costs ~2 LLM calls (1 proposal + 1 judge).")
 
     click.echo(f"\nProject scaffolded in {Path(directory).resolve()}")
 
-    # Show provider hint if selected
-    if provider:
-        env_vars = {
-            "openai": "OPENAI_API_KEY",
-            "anthropic": "ANTHROPIC_API_KEY",
-            "gemini": "GOOGLE_API_KEY",
-        }
-        env_var = env_vars.get(provider, "LLM_API_KEY")
-        click.echo(f"\nProvider: {provider}")
-        click.echo(f"  Make sure {env_var} is set in your environment.")
+    # Show clear next steps based on what they chose
+    env_vars = {
+        "openai": "OPENAI_API_KEY",
+        "anthropic": "ANTHROPIC_API_KEY",
+        "gemini": "GOOGLE_API_KEY",
+    }
 
-    click.echo("\nNext steps:")
-    click.echo("  1. Edit program.md with your optimization goal")
-    if target_file:
-        click.echo(f"  2. Edit {target_file} with your initial content")
-        click.echo("  3. Edit or replace eval.py / eval.sh with your eval harness")
-        click.echo("  4. Run: ars run")
-    else:
-        click.echo("  2. Edit or replace eval.py / eval.sh with your eval harness")
-        click.echo("  3. Run: ars run")
+    click.echo("\n" + "=" * 50)
+    click.echo("  Next steps:")
+    click.echo("=" * 50)
+
+    step = 1
+
+    # API key
+    if provider:
+        env_var = env_vars.get(provider, "LLM_API_KEY")
+        click.echo(f"\n  {step}. Set your API key:")
+        click.echo(f"     export {env_var}=your-key-here")
+        step += 1
+
+    # Edit target file (only if they didn't import one)
+    if not import_user_file and target_file:
+        click.echo(f"\n  {step}. Edit your target file:")
+        click.echo(f"     {target_file}")
+        click.echo(f"     (Replace the template content with your actual prompt/config/code)")
+        step += 1
+
+    # Edit test cases (if test case eval)
+    if eval_method == "test_cases":
+        click.echo(f"\n  {step}. Add your test cases:")
+        click.echo(f"     test_cases.json")
+        click.echo(f'     Format: [{{"input": "your input", "expected": "expected output"}}]')
+        step += 1
+
+    # Validate
+    click.echo(f"\n  {step}. Validate your setup:")
+    click.echo(f"     ars run --dry-run")
+    step += 1
+
+    # Run
+    click.echo(f"\n  {step}. Run experiments:")
+    click.echo(f"     ars run --max-experiments 20")
+    click.echo()
